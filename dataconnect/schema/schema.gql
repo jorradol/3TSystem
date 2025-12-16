@@ -1,0 +1,49 @@
+type StaffUser @table {
+  username: String!
+  passwordHash: String!
+  role: String!
+  createdAt: Timestamp!
+  fullName: String
+  email: String
+}
+
+type Customer @table {
+  name: String!
+  contactEmail: String!
+  createdAt: Timestamp!
+  contactPhone: String
+  address: String
+}
+
+type Device @table {
+  serialNumber: String!
+  model: String!
+  status: String!
+  acquisitionDate: Date!
+  description: String
+  manufacturer: String
+  screenSizeInches: Float
+}
+
+type Rental @table {
+  rentalStartDate: Date!
+  rentalEndDate: Date!
+  deviceStatusOnReturn: String!
+  createdAt: Timestamp!
+  device: Device!
+  customer: Customer!
+  rentalAgent: StaffUser!
+  actualReturnDate: Date
+  rentalPrice: Float
+  notes: String
+}
+
+type MaintenanceLog @table {
+  maintenanceDate: Date!
+  description: String!
+  type: String!
+  device: Device!
+  staffUser: StaffUser!
+  cost: Float
+  notes: String
+}
