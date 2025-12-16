@@ -1,0 +1,43 @@
+mutation CreateMaintenanceLog(
+    $deviceId: UUID!
+    $staffUserId: UUID!
+    $cost: Float
+    $description: String!
+    $maintenanceDate: Date!
+    $notes: String
+    $type: String!
+) @auth(level: USER) {
+  maintenanceLog_insert(
+    data: {
+      deviceId: $deviceId
+      staffUserId: $staffUserId
+      cost: $cost
+      description: $description
+      maintenanceDate: $maintenanceDate
+      notes: $notes
+      type: $type
+    }
+  )
+}
+
+query ListAvailableDevices @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  devices(where: { status: { eq: "available" } }) {
+    id
+    model
+    manufacturer
+    screenSizeInches
+  }
+}
+
+mutation UpdateRentalNotes($id: UUID!, $notes: String) @auth(level: USER) {
+  rental_update(key: { id: $id }, data: { notes: $notes })
+}
+
+query ListStaffUsersCreatedBefore($createdAt: Timestamp!) @auth(level: USER) {
+  staffUsers(where: { createdAt: { lt: $createdAt } }) {
+    id
+    fullName
+    username
+    email
+  }
+}
